@@ -35,7 +35,7 @@ jobs:
           port: ${{ secrets.AZURE_VM_SSH_PORT }}
           password: ${{ secrets.AZURE_VM_PASSWORD }}
           script: |
-            docker pull ${{ secrets.IMAGE_TAG }}
-            docker stop my-container || true
-            docker rm my-container || true
-            docker run -d --name my-container -p 1234:1234 ${{ secrets.IMAGE_TAG }}
+            sudo docker pull ${{ secrets.IMAGE_TAG }}
+            sudo docker stop my-container || true
+            sudo docker rm my-container || true
+            sudo docker run -d --name my-container -p 1234:1234 ${{ secrets.IMAGE_TAG }}
