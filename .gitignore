@@ -47,7 +47,6 @@ yarn-debug.log*
 yarn-error.log*
 
 *.swp
-GrainSense/dataPackage/*
 conf/*
 static/*
 staticfiles/*
