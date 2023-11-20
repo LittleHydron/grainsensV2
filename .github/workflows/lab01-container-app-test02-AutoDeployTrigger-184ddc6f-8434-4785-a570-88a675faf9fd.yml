@@ -8,7 +8,7 @@ on:
       [ BackEnd ]
     paths:
     - '**'
-    - '.github/workflows/lab01-container-app-test02-AutoDeployTrigger-184ddc6f-8434-4785-a570-88a675faf9fd.yml'
+    - '.github/workflows/lab01-container-app-test02-AutoDeployTrigger-7291660c-a9ff-4ab8-b444-0b9790b88530.yml'
 
   # Allow manual trigger 
   workflow_dispatch:
@@ -31,12 +31,9 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }} 
           registryUrl: docker.io
-          registryUsername: ${{ secrets.LAB01CONTAINERAPPTEST02_REGISTRY_USERNAME }}
-          registryPassword: ${{ secrets.LAB01CONTAINERAPPTEST02_REGISTRY_PASSWORD }}
+          registryUsername: ${{ secrets.DOCKER_USERNAME }}
+          registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: lab01-container-app-test02
           resourceGroup: NULP_resources_01
-          imageToBuild: LittleHydron/littlehydron/images_for_lab1:${{ github.sha }}
-          dockerfilePath: Dockerfile
-
-     
-
+          targetPort: 1234
+          imageToBuild: littlehydron/images_for_lab1:grainsense_image
