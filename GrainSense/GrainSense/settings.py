@@ -24,9 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = []
+DEBUG = True
 
 # Application definition
 
@@ -126,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-ALLOWED_HOSTS = ['172.172.161.22']
+ALLOWED_HOSTS = ["*"]
 
 STATIC_URL = '/home/hydra/grainsensV2/GrainSense/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')

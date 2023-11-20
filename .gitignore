@@ -47,7 +47,9 @@ yarn-debug.log*
 yarn-error.log*
 
 *.swp
+.idea/*
 conf/*
-static/*
+GrainSense/static/*
+GrainSense/staticfiles/*
 staticfiles/*
 templates/*
