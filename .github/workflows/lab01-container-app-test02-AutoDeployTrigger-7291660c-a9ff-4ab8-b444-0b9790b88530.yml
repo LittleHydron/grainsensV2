@@ -30,12 +30,12 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }} 
-          registryUrl: docker.io/login
-          registryUsername: ${{ secrets.LAB01CONTAINERAPPTEST02_REGISTRY_USERNAME }}
-          registryPassword: ${{ secrets.LAB01CONTAINERAPPTEST02_REGISTRY_PASSWORD }}
+          registryUrl: docker.io
+          registryUsername: ${{ secrets.DOCKER_USERNAME }}
+          registryPassword: ${{ secrets.DOCKER_PASSWORD }}
           containerAppName: lab01-container-app-test02
           resourceGroup: NULP_resources_01
-          imageToBuild: LittleHydron/lab01-container-app-test02:${{ github.sha }}
+          imageToBuild: littlehydron/images_for_lab1:grainsense_image
           
 
      
