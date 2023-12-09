@@ -9,7 +9,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="GrainSense API",
         default_version='v27',
-        description="Welcome v glaz or v jopu raz",
+        description="Description",
     ),
     public=True,
     permission_classes=[]
