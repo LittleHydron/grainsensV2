@@ -1,0 +1,76 @@
+name: Combined Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPOSITORY: shrek
+  ECS_SERVICE: dead-service
+  ECS_CLUSTER: lab02-claster03
+  CONTAINER_NAME: lab02-container
+
+jobs:
+  build_and_deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Stop the current ECS tasks
+        run: |
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count 0
+
+      - name: Wait for the tasks to stop
+        run: |
+          sleep 30
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: latest
+        run: |
+          docker build --build-arg JAR_FILE=target/*.jar -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Download task def
+        run: |
+          echo "Task Definition Name: lab02-taskdef01"
+          aws ecs describe-task-definition --task-definition lab02-taskdef01 --query taskDefinition > lab02-taskdef01.json
+
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: lab02-taskdef01.json
+          container-name: lab02-cantainer
+          image: ${{ steps.build-image.outputs.image }}
+
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+
+      - name : Run ECS task
+        run : |
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count 1

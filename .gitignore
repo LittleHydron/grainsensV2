@@ -50,6 +50,4 @@ yarn-error.log*
 .idea/*
 conf/*
 GrainSense/static/*
-GrainSense/staticfiles/*
-staticfiles/*
 templates/*
