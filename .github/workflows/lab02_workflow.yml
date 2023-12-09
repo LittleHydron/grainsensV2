@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: eu-west-2
   ECR_REPOSITORY: shrek
-  ECS_SERVICE: dead-service
+  ECS_SERVICE: lab02-service05
   ECS_CLUSTER: lab02-claster04
   CONTAINER_NAME: lab02-container
 
@@ -31,13 +31,13 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: Stop the current ECS tasks
-      #   run: |
-      #     aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count 0
+      - name: Stop the current ECS tasks
+        run: |
+          aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} --service ${{ env.ECS_SERVICE }} --desired-count 0
 
-      # - name: Wait for the tasks to stop
-      #   run: |
-      #     sleep 30
+      - name: Wait for the tasks to stop
+        run: |
+          sleep 30
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
