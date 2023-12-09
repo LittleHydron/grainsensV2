@@ -2,7 +2,7 @@ name: Combined Workflow
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "BackEnd" ]
 
 env:
   AWS_REGION: eu-west-2
